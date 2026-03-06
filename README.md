@@ -4,14 +4,6 @@ AI-powered classroom discourse analysis tool that visualizes the structure of cl
 
 AIを活用して授業記録を分析し、発言間の関係性、トピック構造、隠れた影響者を可視化するツールです。
 
-## Features / 機能
-
-- **Relation Network / 関係ネットワーク**: Visualize relationships between utterances (agreement, disagreement, addition, etc.)
-- **Statistical Analysis / 統計分析**: Speaker statistics, centrality analysis, topic distribution
-- **Timeline View / タイムライン表示**: Chronological view of all utterances with coding
-- **Bilingual Support / 多言語対応**: Japanese and English interface
-- **Export / エクスポート**: Export analysis results as JSON, charts as PNG/JPG
-
 ## Requirements / 必要なもの
 
 1. **Node.js** (v18 or later) - [Download](https://nodejs.org/)
@@ -37,6 +29,7 @@ AIを活用して授業記録を分析し、発言間の関係性、トピック
    ./start-mac-linux.sh
    ```
 5. Open http://localhost:3000 in your browser
+
 
 ### Manual Installation / 手動インストール
 
