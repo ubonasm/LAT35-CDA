@@ -72,13 +72,13 @@ CSVファイルは3列で構成されます：
 
 <img width="1566" height="1100" alt="スクリーンショット 2026-03-06 142127" src="https://github.com/user-attachments/assets/cd01afb0-8250-4b1d-a0f0-72d5c5389118" />
 
+
 3. Wait for AI analysis / AI分析を待つ
 
 <img width="693" height="666" alt="スクリーンショット 2026-03-06 142334" src="https://github.com/user-attachments/assets/6e123929-c2fe-4514-8d22-748be5036868" />
 
-4. Explore the results in different tabs / 各タブで結果を確認
 
-<img width="1520" height="130" alt="スクリーンショット 2026-03-06 142409" src="https://github.com/user-attachments/assets/6b092201-21b5-42e9-978a-b57bc7f5e1c2" />
+4. Explore the results in different tabs / 各タブで結果を確認
 
 <img width="1517" height="715" alt="スクリーンショット 2026-03-06 142511" src="https://github.com/user-attachments/assets/e160d902-ce22-480c-b85d-54b257487bdb" />
 
