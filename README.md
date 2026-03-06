@@ -18,6 +18,9 @@ AIを活用して授業記録を分析し、発言間の関係性、トピック
 3. Double-click `start-windows.bat`
 4. Open http://localhost:3000 in your browser
 
+<img width="255" height="479" alt="スクリーンショット 2026-03-06 142214" src="https://github.com/user-attachments/assets/15b24f28-b3ba-49f4-8b53-b9f18d4f1a43" />
+
+
 ### Mac / Linux
 
 1. Install [Node.js](https://nodejs.org/)
@@ -66,8 +69,20 @@ CSVファイルは3列で構成されます：
 
 1. Enter your Gemini API key / Gemini APIキーを入力
 2. Upload a CSV file / CSVファイルをアップロード
+
+<img width="1566" height="1100" alt="スクリーンショット 2026-03-06 142127" src="https://github.com/user-attachments/assets/cd01afb0-8250-4b1d-a0f0-72d5c5389118" />
+
 3. Wait for AI analysis / AI分析を待つ
+
+<img width="693" height="666" alt="スクリーンショット 2026-03-06 142334" src="https://github.com/user-attachments/assets/6e123929-c2fe-4514-8d22-748be5036868" />
+
 4. Explore the results in different tabs / 各タブで結果を確認
+
+<img width="1520" height="130" alt="スクリーンショット 2026-03-06 142409" src="https://github.com/user-attachments/assets/6b092201-21b5-42e9-978a-b57bc7f5e1c2" />
+
+<img width="1517" height="715" alt="スクリーンショット 2026-03-06 142511" src="https://github.com/user-attachments/assets/e160d902-ce22-480c-b85d-54b257487bdb" />
+
+
 
 ## Deployment / デプロイ
 
