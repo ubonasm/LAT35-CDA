@@ -53,21 +53,6 @@ pnpm dev
 
 Then open http://localhost:3000 in your browser.
 
-## CSV Format / CSVフォーマット
-
-The CSV file should have 3 columns:
-CSVファイルは3列で構成されます：
-
-```
-発言番号,発言者,発言内容
-1,T,今日は三角形について学びます
-2,A子,先生、三角形って何ですか？
-3,T,いい質問ですね。三角形とは...
-```
-
-- Column 1: Utterance number / 発言番号
-- Column 2: Speaker name (T, 先生, 教師 = Teacher) / 発言者名
-- Column 3: Utterance content / 発言内容
 
 ## Usage / 使い方
 
@@ -76,31 +61,8 @@ CSVファイルは3列で構成されます：
 3. Wait for AI analysis / AI分析を待つ
 4. Explore the results in different tabs / 各タブで結果を確認
 
-## Deployment / デプロイ
-
-### Vercel (Recommended)
-
-The easiest way to deploy is using Vercel:
-
-1. Push to GitHub
-2. Connect to Vercel
-3. Deploy automatically
-
-### Self-hosted
-
-```bash
-# Build for production
-pnpm build
-
-# Start production server
-pnpm start
-```
 
 ## License / ライセンス
 
 MIT License
 
-## Support / サポート
-
-For issues or questions, please create an issue on GitHub.
-問題や質問がある場合は、GitHubでissueを作成してください。
