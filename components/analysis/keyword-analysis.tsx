@@ -3,9 +3,10 @@
 import { useMemo, useState, useRef } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { Download, Table2, Info } from "lucide-react"
+import { Download, Table2, Info, Plus, X } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import type { AnalysisResult, Utterance, Keyword } from "@/lib/analysis-types"
 
@@ -20,7 +21,11 @@ export function KeywordAnalysis({ result, utterances }: KeywordAnalysisProps) {
   const { language } = useLanguage()
   const [selectedMetric, setSelectedMetric] = useState<MetricType>("jaccard")
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
+  const [customKeywords, setCustomKeywords] = useState<Keyword[]>([])
+  const [newKeywordInput, setNewKeywordInput] = useState("")
   const tableRef = useRef<HTMLDivElement>(null)
+  
+  const MAX_CUSTOM_KEYWORDS = 5
 
   const t = language === "ja" ? {
     title: "キーワード分析",
@@ -42,6 +47,12 @@ export function KeywordAnalysis({ result, utterances }: KeywordAnalysisProps) {
     miDesc: "2つのキーワードの相互依存性（高いほど関連が強い）",
     clearSelection: "選択をクリア",
     selectAll: "すべて選択",
+    addCustomKeyword: "カスタムキーワードを追加",
+    customKeywordPlaceholder: "キーワードを入力...",
+    add: "追加",
+    customKeywords: "追加キーワード",
+    maxCustomKeywords: "最大5個まで追加できます",
+    alreadyExists: "このキーワードは既に存在します",
   } : {
     title: "Keyword Analysis",
     description: "Analyze relationships between key terms in the lesson",
@@ -62,10 +73,16 @@ export function KeywordAnalysis({ result, utterances }: KeywordAnalysisProps) {
     miDesc: "Mutual dependency between keywords (higher = stronger relation)",
     clearSelection: "Clear Selection",
     selectAll: "Select All",
+    addCustomKeyword: "Add Custom Keyword",
+    customKeywordPlaceholder: "Enter keyword...",
+    add: "Add",
+    customKeywords: "Custom Keywords",
+    maxCustomKeywords: "Up to 5 custom keywords",
+    alreadyExists: "This keyword already exists",
   }
 
   // Get keywords from result or extract from utterances
-  const keywords: Keyword[] = useMemo(() => {
+  const baseKeywords: Keyword[] = useMemo(() => {
     if (result.keywords && result.keywords.length > 0) {
       return result.keywords.slice(0, 20)
     }
@@ -101,6 +118,45 @@ export function KeywordAnalysis({ result, utterances }: KeywordAnalysisProps) {
         category: "other" as const,
       }))
   }, [result.keywords, utterances])
+
+  // Combine base keywords with custom keywords
+  const keywords: Keyword[] = useMemo(() => {
+    return [...baseKeywords, ...customKeywords]
+  }, [baseKeywords, customKeywords])
+
+  // Add custom keyword
+  const addCustomKeyword = () => {
+    const word = newKeywordInput.trim()
+    if (!word) return
+    if (customKeywords.length >= MAX_CUSTOM_KEYWORDS) return
+    if (keywords.some(k => k.word === word)) return
+    
+    // Find utterances containing this word
+    const utteranceIds: number[] = []
+    utterances.forEach(u => {
+      if (u.content.includes(word)) {
+        utteranceIds.push(u.id)
+      }
+    })
+    
+    const newKeyword: Keyword = {
+      word,
+      frequency: utteranceIds.length,
+      utteranceIds,
+      importance: 0.5,
+      category: "other",
+    }
+    
+    setCustomKeywords(prev => [...prev, newKeyword])
+    setSelectedKeywords(prev => [...prev, word])
+    setNewKeywordInput("")
+  }
+
+  // Remove custom keyword
+  const removeCustomKeyword = (word: string) => {
+    setCustomKeywords(prev => prev.filter(k => k.word !== word))
+    setSelectedKeywords(prev => prev.filter(w => w !== word))
+  }
 
   // Toggle keyword selection
   const toggleKeyword = (word: string) => {
@@ -298,9 +354,62 @@ export function KeywordAnalysis({ result, utterances }: KeywordAnalysisProps) {
             </div>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          {/* Custom Keyword Input */}
+          <div className="p-3 border rounded-lg bg-muted/30">
+            <div className="flex items-center gap-2 mb-2">
+              <Plus className="w-4 h-4 text-muted-foreground" />
+              <span className="text-sm font-medium">{t.addCustomKeyword}</span>
+              <span className="text-xs text-muted-foreground">
+                ({customKeywords.length}/{MAX_CUSTOM_KEYWORDS})
+              </span>
+            </div>
+            <div className="flex gap-2">
+              <Input
+                value={newKeywordInput}
+                onChange={(e) => setNewKeywordInput(e.target.value)}
+                placeholder={t.customKeywordPlaceholder}
+                className="flex-1"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault()
+                    addCustomKeyword()
+                  }
+                }}
+                disabled={customKeywords.length >= MAX_CUSTOM_KEYWORDS}
+              />
+              <Button
+                size="sm"
+                onClick={addCustomKeyword}
+                disabled={!newKeywordInput.trim() || customKeywords.length >= MAX_CUSTOM_KEYWORDS || keywords.some(k => k.word === newKeywordInput.trim())}
+              >
+                {t.add}
+              </Button>
+            </div>
+            {customKeywords.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {customKeywords.map(kw => (
+                  <span
+                    key={kw.word}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-accent text-accent-foreground"
+                  >
+                    {kw.word}
+                    <span className="opacity-70">({kw.frequency})</span>
+                    <button
+                      onClick={() => removeCustomKeyword(kw.word)}
+                      className="ml-0.5 hover:text-destructive"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Keyword List */}
           <div className="flex flex-wrap gap-2">
-            {keywords.map(kw => (
+            {baseKeywords.map(kw => (
               <button
                 key={kw.word}
                 onClick={() => toggleKeyword(kw.word)}
